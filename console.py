@@ -124,18 +124,19 @@ class HBNBCommand(cmd.Cmd):
             return
         new_instance = HBNBCommand.classes[pars[0]]()
         for i in range(2, len(pars)):
-            key = ((pars[i]).partition("="))[0]
-            value = ((pars[i]).partition("="))[2]
+            key = ((pars[i]).split("="))[0]
+            value = ((pars[i]).split("="))[1]
             try:
                 value = value.replace('_', ' ')
                 value = value.replace('"', '')
                 getattr(new_instance, key)
-                setattr(new_instance, key, value)
+                if key in HBNBCommand.types:
+                    value = HBNBCommand.types[key](value)
+                    setattr(new_instance, key, value)
             except Exception:
                 pass
         storage.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
