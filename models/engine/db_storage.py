@@ -32,16 +32,15 @@ class DBStorage:
         HBNB_MYSQL_DB = getenv('HBNB_MYSQL_DB')
         HBNB_ENV = getenv('HBNB_ENV')
 
-        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}"
-                   .format(
-                   HBNB_MYSQL_USER,
-                   HBNB_MYSQL_PWD,
-                   HBNB_MYSQL_HOST,
-                   HBNB_MYSQL_DB
-                   ), pool_pre_ping=True)
+        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".format(
+            HBNB_MYSQL_USER, HBNB_MYSQL_PWD, HBNB_MYSQL_HOST,
+            HBNB_MYSQL_DB), pool_pre_ping=True)
 
         if HBNB_ENV == "test":
             Base.metadata.drop_all(self.__engine)
+
+        Session = sessionmaker(bind=self.__engine)
+        self.__session = Session()
 
     def all(self, cls=None):
         """ query on the current database session (self.__session) all objects
@@ -49,13 +48,13 @@ class DBStorage:
 
         new_dict = {}
         if cls is None:
-            for key, value in classes.items():
+            for k, value in classes.items():
                 for clase in self.__session.query(value).all():
-                    key = "{}.{}".format(type(clase).__name__, clase.id)
+                    key = "{}.{}".format(k, clase.id)
                     new_dict[key] = clase
         else:
-            for clase in self.__session.query(cls).all():
-                key = "{}.{}".format(type(clase).__name__, clase.id)
+            for clase in self.__session.query(classes[cls]).all():
+                key = "{}.{}".format(cls, clase.id)
                 new_dict[key] = clase
 
         return new_dict
@@ -78,8 +77,8 @@ class DBStorage:
 
     def reload(self):
         """ create all tables in the database (feature of SQLAlchemy) (WARNING:
-        all classes who inherit from Base must be imported before                  
-        calling Base.metadata.create_all(engine)) create the current database
+        all classes who inherit from Base must be imported before calling
+        Base.metadata.create_all(engine)) create the current database
         session (self.__session) from the engine (self.__engine) by using a
         sessionmaker - the option expire_on_commit must be set to False ; and
         scoped_session - to make sure your Session is thread-safe """
@@ -87,7 +86,7 @@ class DBStorage:
         Base.metadata.create_all(self.__engine)
         temp = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(temp)
-        self.__session = Session
+        self.__session = Session()
 
     def close(self):
         """closes session"""
