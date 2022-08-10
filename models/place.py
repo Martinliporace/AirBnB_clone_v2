@@ -5,7 +5,6 @@ from models.base_model import BaseModel
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
 import models
-metadata = MetaData()
 
 if (models.type_storage == "db"):
     place_amenity = Table('place_amenity', Base.metadata,
@@ -15,6 +14,8 @@ if (models.type_storage == "db"):
                           Column('amenity_id', String(60),
                                  ForeignKey("amenities.id"),
                                  primary_key=True, nullable=False))
+
+
 class Place(BaseModel, Base):
     """ A place to stay """
     __tablename__ = 'places'
