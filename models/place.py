@@ -5,8 +5,16 @@ from models.base_model import BaseModel
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
 import models
+metadata = MetaData()
 
-
+if (models.type_storage == "db"):
+    place_amenity = Table('place_amenity', Base.metadata,
+                          Column('place_id', String(60),
+                                 ForeignKey("places.id"),
+                                 primary_key=True, nullable=False),
+                          Column('amenity_id', String(60),
+                                 ForeignKey("amenities.id"),
+                                 primary_key=True, nullable=False))
 class Place(BaseModel, Base):
     """ A place to stay """
     __tablename__ = 'places'
@@ -57,8 +65,4 @@ class Place(BaseModel, Base):
             """  returns the list of Amenity instances based on the attribute
             amenity_ids that contains all Amenity.id linked to the Place """
 
-            new_dict = []
-            for key, value in storage.all:
-                if (self.id == value.id):
-                    new_dict[key] = value
-            return (new_dict)
+            return self.amenities
