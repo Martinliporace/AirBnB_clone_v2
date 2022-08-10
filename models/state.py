@@ -11,9 +11,14 @@ class State(BaseModel, Base):
     """ State class """
     __tablename__ = 'states'
     name = Column(String(128), nullable=False)
+
     if (models.type_storage == "db"):
         cities = relationship("City", backref="state")
+
     else:
+        name = ''
+
+        @property
         def cities(self):
             """represent a relationship with the class City"""
             list_cities = []

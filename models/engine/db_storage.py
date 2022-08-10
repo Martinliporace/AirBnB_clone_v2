@@ -39,9 +39,6 @@ class DBStorage:
         if HBNB_ENV == "test":
             Base.metadata.drop_all(self.__engine)
 
-        Session = sessionmaker(bind=self.__engine)
-        self.__session = Session()
-
     def all(self, cls=None):
         """ query on the current database session (self.__session) all objects
         depending of the class name (argument cls) """
