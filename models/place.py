@@ -30,33 +30,36 @@ class Place(BaseModel, Base):
                                  backref="place_amenities", viewonly=False)
 
     else:
+        amenity_ids = []
 
         @property
         def reviews(self):
-            """ returns the list of Review instances with place_id
-            equals to the current Place.id"""
-
+            """Lists all reviews"""
+            new_dict = self.reviews
             reviews_list = []
-            new_dict = storage.all(self)
             for key, value in new_dict.items():
-                if value.place_id == self.id:
-                    reviews_list.append(new_dict[key])
+                if self.id == value.review_id:
+                    reviews_list.append(value)
+
             return reviews_list
 
         @property
         def amenities(self):
-            """  returns the list of Amenity instances based on the attribute
-            amenity_ids that contains all Amenity.id linked to the Place """
+            """Lists all amenities"""
+            new_dict = self.amenities
+            amenities_list = []
+            for key, value in new_dict.items():
+                if self.id == value.amenities_id:
+                    amenities_list.append(value)
 
-            return self.amenities
+            return amenities_list
 
         @amenities.setter
-        def amenities_setter(self, amenities=None):
-            """setter of amenities"""
+        def amenities(self, amenities=None):
+            """ Amenities setter"""
             if type(amenities) == Amenity:
-                am_list = []
-                self.am_ist.append(amenities.id)
-
+                new_list = []
+                self.new_list.append(amenities.id)
 
 place_amenity = Table('place_amenity', Base.metadata,
                       Column('place_id', String(60),
