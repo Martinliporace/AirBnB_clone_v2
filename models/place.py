@@ -45,10 +45,10 @@ class Place(BaseModel, Base):
             equals to the current Place.id"""
 
             reviews_list = []
-            new_dict = storage.all(self)
+            new_dict = self.reviews
             for key, value in new_dict.items():
                 if value.review_id == self.id:
-                    reviews_list.append(new_dict[key])
+                    reviews_list.append(value)
             return reviews_list
 
         @property
