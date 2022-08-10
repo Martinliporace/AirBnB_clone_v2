@@ -15,9 +15,8 @@ import sqlalchemy
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 
-classes = {'BaseModel': BaseModel, 'User': User, 'Place': Place,
-           'State': State, 'City': City, 'Amenity': Amenity,
-           'Review': Review}
+classes = {'User': User, 'Place': Place, 'State': State,
+           'City': City, 'Amenity': Amenity, 'Review': Review}
 
 
 class DBStorage:
@@ -33,7 +32,7 @@ class DBStorage:
         HBNB_MYSQL_DB = getenv('HBNB_MYSQL_DB')
         HBNB_ENV = getenv('HBNB_ENV')
 
-        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}:3306/{}"
+        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}"
                    .format(
                    HBNB_MYSQL_USER,
                    HBNB_MYSQL_PWD,
@@ -50,10 +49,10 @@ class DBStorage:
 
         new_dict = {}
         if cls is None:
-            for clase in self.__session.query(User, State, City,
-                                             Place, Amenity, Review).all():
-                key = "{}.{}".format(type(clase).__name__, clase.id)
-                new_dict[key] = clase
+            for key, value in classes.items():
+                for clase in self.__session.query(value).all():
+                    key = "{}.{}".format(type(clase).__name__, clase.id)
+                    new_dict[key] = clase
         else:
             for clase in self.__session.query(cls).all():
                 key = "{}.{}".format(type(clase).__name__, clase.id)
