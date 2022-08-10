@@ -2,7 +2,6 @@
 """ Place Module for HBNB project """
 from models.base_model import Base
 from models.base_model import BaseModel
-from models import storage
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
 import models
@@ -32,39 +31,47 @@ class Place(BaseModel, Base):
         price_by_night = Column(Integer, nullable=False, default=0)
         latitude = Column(Float, nullable=True)
         longitude = Column(Float, nullable=True)
+        amenity_ids = []
 
         reviews = relationship("Review", backref="place")
         amenities = relationship("Amenity", secondary="place_amenity",
                                  backref="place_amenities", viewonly=False)
 
     else:
+        city_id = ""
+        user_id = ""
+        name = ""
+        description = ""
+        number_rooms = 0
+        number_bathrooms = 0
+        max_guest = 0
+        price_by_night = 0
+        latitude = 0.0
+        longitude = 0.0
         amenity_ids = []
 
-        @property
         def reviews(self):
-            """Lists all reviews"""
-            new_dict = self.reviews
-            reviews_list = []
+            """ returns the list of Review instances with place_id
+            equals to the current Place.id"""
+
+            from models import storage
+
+            cities = []
+            new_dict = storage.all(self)
             for key, value in new_dict.items():
-                if self.id == value.review_id:
-                    reviews_list.append(value)
+                if value.place_id == self.id:
+                    cities.append(new_dict[key])
+            return cities
 
-            return reviews_list
-
-        @property
         def amenities(self):
-            """Lists all amenities"""
-            new_dict = self.amenities
-            amenities_list = []
-            for key, value in new_dict.items():
-                if self.id == value.amenities_id:
-                    amenities_list.append(value)
+            """  returns the list of Amenity instances based on the attribute
+            amenity_ids that contains all Amenity.id linked to the Place """
 
-            return amenities_list
+            return self.amenities
 
         @amenities.setter
-        def amenities(self, amenities=None):
-            """ Amenities setter"""
+        def amenities_setter(self, amenities=None):
+            """setter of amenities"""
             if type(amenities) == Amenity:
-                new_list = []
-                self.new_list.append(amenities.id)
+                am_list = []
+                self.am_ist.append(amenities.id)
