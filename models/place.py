@@ -7,14 +7,6 @@ from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
 import models
 
-place_amenity = Table('place_amenity', Base.metadata,
-                      Column('place_id', String(60),
-                             ForeignKey("places.id"),
-                             primary_key=True, nullable=False),
-                      Column('amenity_id', String(60),
-                             ForeignKey("amenities.id"),
-                             primary_key=True, nullable=False))
-
 
 class Place(BaseModel, Base):
     """ A place to stay """
@@ -45,10 +37,10 @@ class Place(BaseModel, Base):
             equals to the current Place.id"""
 
             reviews_list = []
-            new_dict = self.reviews
+            new_dict = storage.all(self)
             for key, value in new_dict.items():
-                if value.review_id == self.id:
-                    reviews_list.append(value)
+                if value.place_id == self.id:
+                    reviews_list.append(new_dict[key])
             return reviews_list
 
         @property
@@ -64,3 +56,13 @@ class Place(BaseModel, Base):
             if type(amenities) == Amenity:
                 am_list = []
                 self.am_ist.append(amenities.id)
+
+
+place_amenity = Table('place_amenity', Base.metadata,
+                      Column('place_id', String(60),
+                             ForeignKey("places.id"),
+                             primary_key=True, nullable=False),
+                      Column('amenity_id', String(60),
+                             ForeignKey("amenities.id"),
+                             primary_key=True, nullable=False))
+
