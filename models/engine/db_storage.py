@@ -50,11 +50,8 @@ class DBStorage:
 
         new_dict = {}
         if cls is None:
-            for clase in self.__session.query(BaseModel,
-                                             User, Place,
-                                             State, City,
-                                             Amenity,
-                                             Review).all():
+            for clase in self.__session.query(User, State, City,
+                                             Place, Amenity, Review).all():
                 key = "{}.{}".format(type(clase).__name__, clase.id)
                 new_dict[key] = clase
         else:
