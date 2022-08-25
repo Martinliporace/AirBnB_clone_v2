@@ -62,7 +62,7 @@ def deploy():
 
 def do_clean(number=0):
     """deletes out-of-date archives"""
-    if int(number) < 2:
+    if int(number) == 0 or int(number) == 1:
         local("ls -tu versions > out_of_date.txt")
         total = os.listdir("versions")
         local("tail -n +2 out_of_date.txt > to_del.txt")
