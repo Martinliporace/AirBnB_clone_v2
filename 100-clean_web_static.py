@@ -77,14 +77,15 @@ def do_clean(number=0):
         local("rm out_of_date.txt to_del.txt")
         run("rm out_of_date.txt to_del.txt")
     else:
+        number = int(number)+1
         local("ls -tu versions > out_of_date.txt")
         total = os.listdir("versions")
-        local("tail -n +{} out_of_date.txt > to_del.txt".format(int(number)+1)
+        local("tail -n +{} out_of_date.txt > to_del.txt".format(number)
         local("for line in $(cat to_del.txt); do rm -rf versions/$line ;done")
 
         run("ls -tu /data/web_static/releases > out_of_date.txt")
         total = os.listdir("/data/web_static/releases")
-        run("tail -n -+{} out_of_date.txt > to_del.txt".format(int(number)+1))
+        run("tail -n -+{} out_of_date.txt > to_del.txt".format(number)
         run("for line in $(cat to_del.txt); do rm -rf /data/web_static/\
             releases/$line ;done")
 
