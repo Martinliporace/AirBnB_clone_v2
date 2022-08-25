@@ -64,31 +64,28 @@ def do_clean(number=0):
     if int(number) < 2:
         local("ls -tu versions > out_of_date.txt")
         total = os.listdir("versions")
-        print("total: ", len(total))
-        toDel = int(len(total) - 1)
         local("tail -n +2 out_of_date.txt > to_del.txt")
         local("for line in $(cat to_del.txt); do rm -rf versions/$line ;done")
 
         run("ls -tu /data/web_static/releases > out_of_date.txt")
         total = os.listdir("/data/web_static/releases")
-        toDel = int(len(total) - 1)
         run("tail -n +2 out_of_date.txt > to_del.txt")
-        run("for line in $(cat to_del.txt);do rm -rf /data/web_static/releases/$line ;done")
+        run("for line in $(cat to_del.txt);do rm -rf /data/web_static/\
+            releases/$line ;done")
 
         local("rm out_of_date.txt to_del.txt")
         run("rm out_of_date.txt to_del.txt")
     else:
         local("ls -tu versions > out_of_date.txt")
         total = os.listdir("versions")
-        toDel = int(len(total) - int(number))
         local("tail -n +{} out_of_date.txt > to_del.txt".format(number))
         local("for line in $(cat to_del.txt); do rm -rf versions/$line ;done")
 
         run("ls -tu /data/web_static/releases > out_of_date.txt")
         total = os.listdir("/data/web_static/releases")
-        toDel = int(len(total) - int(number))
         run("tail -n -+{} out_of_date.txt > to_del.txt".format(number))
-        run("for line in $(cat to_del.txt); do rm -rf /data/web_static/releases/$line ;done")
+        run("for line in $(cat to_del.txt); do rm -rf /data/web_static/\
+            releases/$line ;done")
 
         local("rm out_of_date.txt to_del.txt")
         run("rm out_of_date.txt to_del.txt")
