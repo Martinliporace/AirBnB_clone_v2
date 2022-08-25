@@ -5,6 +5,7 @@ from fabric.api import local
 from datetime import datetime
 from os import path
 
+
 def do_pack():
     """script that generates a .tgz archive from the contents
     of the web_static folder of your AirBnB Clone repo"""
@@ -16,5 +17,5 @@ def do_pack():
     try:
         local("tar -cvzf " + file_name + " web_static")
         return (file_name)
-    except:
+    except Exception:
         return (None)
