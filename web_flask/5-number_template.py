@@ -41,7 +41,7 @@ def hello_route5(n):
 def hello_route6(n):
     num = int(n)
     if type(num) is int:
-        return render_template('5-number.html', num)
+        return render_template('5-number.html', num=n)
 
 
 if __name__ == '__main__':
