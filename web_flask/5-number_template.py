@@ -39,9 +39,9 @@ def hello_route5(n):
 
 @app.route("/number_template/<n>")
 def hello_route6(n):
-    text = int(n)
-    if type(text) is int:
-        return render_template('5-number.html')
+    num = int(n)
+    if type(num) is int:
+        return render_template('5-number.html', num)
 
 
 if __name__ == '__main__':
