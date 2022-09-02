@@ -59,5 +59,9 @@ class FileStorage:
     def delete(self, obj=None):
         """Deletes object instance"""
         if obj is not None:
-            self.__objects.pop(f"{obj.__class__.__name__}.{obj.id}")
+            self.__objects.pop("{}.{}".format(obj.__class__.__name__, obj.id))
             self.save()
+
+    def close(self):
+        """calls the reload method"""
+        self.reload()

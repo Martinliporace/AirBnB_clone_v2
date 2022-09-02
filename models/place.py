@@ -50,6 +50,7 @@ class Place(BaseModel, Base):
         longitude = 0.0
         amenity_ids = []
 
+        @property
         def reviews(self):
             """ returns the list of Review instances with place_id
             equals to the current Place.id"""
@@ -63,6 +64,7 @@ class Place(BaseModel, Base):
                     cities.append(new_dict[key])
             return cities
 
+        @property
         def amenities(self):
             """  returns the list of Amenity instances based on the attribute
             amenity_ids that contains all Amenity.id linked to the Place """
