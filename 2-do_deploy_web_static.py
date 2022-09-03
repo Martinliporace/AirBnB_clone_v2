@@ -8,6 +8,7 @@ from os import path
 env.hosts = ['54.147.142.107', '34.235.143.218']
 env.user = "ubuntu"
 
+
 def do_pack():
     """script that generates a .tgz archive from the contents
     of the web_static folder of your AirBnB Clone repo"""
@@ -22,6 +23,7 @@ def do_pack():
     except:
         return (None)
 
+
 def do_deploy(archive_path):
     """ todos aprontandose para irse de joda y
     yo aca como un pelotudo, lpqlp"""
@@ -32,7 +34,8 @@ def do_deploy(archive_path):
             file_name = "/data/web_static/releases/" + name[0] + "/"
             put(archive_path, "/tmp/")
             run("mkdir -p " + file_name)
-            run("tar -xzf /tmp/" + archive_path.split("/")[1] + " -C " + file_name)
+            run("tar -xzf /tmp/" + archive_path.split("/")[1] +
+                " -C " + file_name)
             run("rm /tmp/" + archive_path.split("/")[1])
             run("mv " + file_name + "web_static/* " + file_name)
             run("rm -rf " + file_name + "web_static")
