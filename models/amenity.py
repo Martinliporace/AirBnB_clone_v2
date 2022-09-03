@@ -6,6 +6,7 @@ from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 from os import getenv
 
+
 class Amenity(BaseModel, Base):
     """ inherits from BaseModel and Base """
     __tablename__ = 'amenities'

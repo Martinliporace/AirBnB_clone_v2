@@ -5,6 +5,7 @@ from models.base_model import BaseModel
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
 import models
+from os import getenv
 
 if (models.type_storage == "db"):
     place_amenity = Table('place_amenity', Base.metadata,
@@ -35,7 +36,7 @@ class Place(BaseModel, Base):
 
         reviews = relationship("Review", backref="place")
         amenities = relationship("Amenity", secondary="place_amenity",
-                                 backref="place_amenities", viewonly=False)
+                                 viewonly=False)
 
     else:
         city_id = ""
@@ -57,12 +58,12 @@ class Place(BaseModel, Base):
 
             from models import storage
 
-            cities = []
+            revs = []
             new_dict = storage.all(self)
             for key, value in new_dict.items():
                 if value.place_id == self.id:
                     cities.append(new_dict[key])
-            return cities
+            return revs
 
         @property
         def amenities(self):
