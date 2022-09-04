@@ -38,10 +38,13 @@ def hello_route4(text='is cool'):
 @app.route("/number/<n>")
 def hello_route5(n):
     """  display 'n is a number' only if n is an integer """
-    text = int(n)
-    text2 = '{} is a number'.format(n)
-    return text2
 
+    try:
+        text = int(n)
+        text2 = '{} is a number'.format(n)
+        return text2
+    except:
+        abort(404)
 
 @app.route("/number_template/<n>")
 def hello_route6(n):
