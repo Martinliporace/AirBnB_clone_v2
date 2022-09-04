@@ -51,9 +51,7 @@ def hello_route5(n):
 def hello_route6(n):
     """ display a HTML page only if n is an integer """
     try:
-        num = int(n)
-        if type(num) is int:
-            return render_template('5-number.html', num=num)
+        return render_template('5-number.html', n=int(n))
     except:
         abort(404)
 
