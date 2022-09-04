@@ -53,7 +53,7 @@ def hello_route6(n):
     try:
         num = int(n)
         if type(num) is int:
-            return render_template('5-number.html', num=n)
+            return render_template('5-number.html', num=num)
     except:
         abort(404)
 
