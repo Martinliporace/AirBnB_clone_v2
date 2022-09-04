@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """ Task 4 """
-from flask import Flask
+from flask import Flask, abort
 
 app = Flask(__name__)
 """starts a Flask web application"""
@@ -37,10 +37,13 @@ def hello_route4(text='is cool'):
 @app.route("/number/<n>")
 def hello_route5(n):
     """  display 'n is a number' only if n is an integer """
-    text = int(n)
-    text2 = '{} is a number'.format(n)
-    return text2
 
+    try:
+        text = int(n)
+        text2 = '{} is a number'.format(n)
+        return text2
+    except:
+        abort(404)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
