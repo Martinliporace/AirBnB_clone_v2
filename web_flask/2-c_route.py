@@ -21,7 +21,7 @@ def hello_route2():
 
 @app.route("/c/<text>")
 def hello_route3(text):
-    """ display “C ” followed by the value of the text variable"""
+    """ display 'C' followed by the value of the text variable"""
     text2 = 'C {}'.format(text.replace('_', ' '))
     return text2
 
