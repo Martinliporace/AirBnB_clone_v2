@@ -50,10 +50,12 @@ def hello_route5(n):
 @app.route("/number_template/<n>")
 def hello_route6(n):
     """ display a HTML page only if n is an integer """
-    num = int(n)
-    if type(num) is int:
-        return render_template('5-number.html', num=n)
-
+    try:
+        num = int(n)
+        if type(num) is int:
+            return render_template('5-number.html', num=n)
+    except:
+        abort(404)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
