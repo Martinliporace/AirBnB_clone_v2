@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+""" Task 6 """
 from flask import Flask, abort
 from flask import render_template
 
