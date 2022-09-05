@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """ Task 5 """
-from flask import Flask
+from flask import Flask, abort
 from flask import render_template
 
 app = Flask(__name__)
@@ -51,7 +51,7 @@ def hello_route5(n):
 def hello_route6(n):
     """ display a HTML page only if n is an integer """
     try:
-        return render_template('5-number.html', n=int(n))
+        return render_template('5-number.html', num=int(n))
     except:
         abort(404)
 
